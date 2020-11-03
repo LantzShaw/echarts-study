@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>折线图</title>
+</head>
+
+<body>
+
+    <div style="width:500px; height: 500px; border: 1px solid #f2f2f2"></div>
+    <script src="./lib/echarts.min.js"></script>
+    <script>
+        let myChart = echarts.init(document.querySelector('div'))
+
+        const xData = ['1月', '2月', '3月', '4月', '5月', '6月', '7月']
+        const yData = [300, 200, 100, 88, 112, 230, 100]
+        const yData2 = [300, 150, 90, 100, 122, 330, 90]
+
+        const option = {
+            title: {
+                text: '销量',
+                textStyle: {
+                    color: 'red',
+                },
+                left: '3%',
+            },
+            xAxis: {
+                type: 'category',
+                data: xData,
+                // 紧挨y轴
+                boundaryGap: false,
+            },
+
+            yAxis: {
+                type: 'value',
+                // 脱离0值比例
+                scale: true,
+            },
+
+            series: [{
+                name: 'NEWCASE销售',
+                type: 'line',
+                data: yData,
+                // 设置堆叠图，实现不会两张图重叠：在第一张的基础上增加 
+                stack: 'all',
+
+                markPoint: {
+                    data: [{
+                        type: 'max'
+                    }, {
+                        type: 'min'
+                    }]
+                },
+                markLine: {
+                    data: [{
+                        type: 'average',
+                    }]
+                },
+                markArea: {
+                    data: [
+                        [{
+                            xAxis: '1月'
+                        }, {
+                            xAxis: '2月'
+                        }],
+                        [{
+                            xAxis: '5月'
+                        }, {
+                            xaxis: '7月'
+                        }]
+                    ]
+                },
+                // 线条平滑效果
+                smooth: true,
+                lineStyle: {
+                    color: '#f40',
+                    type: 'dotted' // dotted 、 solid、dashed
+                },
+                areaStyle: {
+                    color: '#000',
+                }
+            }, {
+                name: '销量',
+                type: 'line',
+                data: yData2,
+                stack: 'all',
+                smooth: 'true',
+                areaStyle: {}
+            }]
+        }
+
+        myChart.setOption(option)
+    </script>
+</body>
+
+</html>

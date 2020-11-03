@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>散点图</title>
+</head>
+
+<body>
+
+    <div style="width: 500px; height: 500px; border: 1px solid #f2f2f2"></div>
+
+    <script src="./lib/echarts.min.js"></script>
+    <script>
+        const data = [{
+            "gender": "male",
+            "height": 1.5,
+            "weight": 40
+        }, {
+            "gender": "male",
+            "height": 1.7,
+            "weight": 57
+        }, {
+            "gender": "male",
+            "height": 1.6,
+            "weight": 60
+        }, {
+            "gender": "male",
+            "height": 1.6,
+            "weight": 80
+        }, {
+            "gender": "male",
+            "height": 1.8,
+            "weight": 80
+        }]
+
+        let axisData = [];
+        let len = data.length
+
+        for (let i = 0; i < len; i++) {
+            let height = data[i].height
+            let weight = data[i].weight
+            let newArr = [height, weight]
+
+            axisData.push(newArr)
+        }
+
+        console.log(axisData)
+
+        const myChart = echarts.init(document.querySelector('div'))
+
+
+        const option = {
+
+            xAxis: {
+                type: 'value',
+                // 脱离0值比例
+                scale: true,
+                position: 'bottom', // 可取值top 、bottom
+            },
+
+            yAxis: {
+                type: 'value',
+                // 脱离0值比例
+                scale: true,
+                position: 'left' // 可取值left 、right
+            },
+
+            dataZoom: [{
+                type: 'slider',
+                // type: 'inside' // 鼠标滚轮或者双击进行缩放
+                // 指明y轴缩放
+                yAxisIndex: 0,
+            }, {
+                type: 'slider',
+                // 指明x轴缩放
+                xAxisIndex: 0,
+                // 初始值的设定
+                start: 0,
+                end: 50,
+            }],
+
+            toolBox: {
+                feature: {
+                    dataZoom: {},
+                    saveAsImage: true,
+                },
+            },
+
+            // 控制图表大小和位置
+            // grid: {
+            //     show: true,
+            //     borderWidth: 10,
+            //     borderColor: 'red',
+            //     left: 10,
+            //     top: 10,
+            //     width: 200,
+            //     height: 200,
+            //     containLabel: true,
+            // },
+
+            series: [{
+                data: axisData,
+                type: 'scatter',
+                // 圆点的大小
+                // symbolSize: 22,
+                symbolSize: function(param) {
+                    let height = param[0];
+                    let weight = param[1];
+                    // bmi = 体重 / (身高*身高)　大于28为肥胖
+                    let bmi = weight / (height * height);
+                    if (bmi > 28) {
+                        return 20
+                    } else {
+                        return 15
+                    }
+                }
+            }]
+
+        }
+
+        myChart.setOption(option)
+    </script>
+</body>
+
+</html>

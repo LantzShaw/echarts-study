@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>柱状图</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="width: 500px; height:500px;"></div>
+    <script src="./lib/echarts.min.js"></script>
+    <script>
+        let mychart = echarts.init(document.querySelector('div'))
+
+        const xData = ['Lantz', 'Fancy', 'Anne', 'Jack', 'Bob']
+        const yData = [5, 20, 36, 10, 10, 20]
+        const yData2 = [15, 23, 60, 120, 130, 220]
+
+        let options = {
+            title: {
+                text: '成绩排行',
+                subtext: '纯属虚构',
+                textStyle: {
+                    color: 'red',
+                },
+                borderWidth: 4,
+                borderRadius: 5,
+                borderColor: 'green',
+                top: 30,
+                left: 30,
+            },
+
+            grid: {
+                // show: true,
+                // x: '3%',
+                // y: '3%',
+                // left: '10%',
+                // right: '3%',
+                bottom: '30%',
+                containLabel: true,
+            },
+
+            legend: {
+                // show: true,
+                data: ['语文成绩', '2019-2020销量']
+            },
+
+            tooltip: {
+                trigger: 'axis',
+                triggeron: 'mousemove',
+                formatter: function(param) {
+                    const item = param[0];
+                    return `
+                    语文<br/>
+                    成绩: ${item.data}
+                    `
+                },
+                axisPointer: {
+                    type: 'line',
+                    lineStyle: {
+                        color: '#f40',
+                    }
+                },
+                backgroundColor: 'transparent',
+                showContent: true
+            },
+
+            toolbox: {
+                feature: {
+                    saveAsImage: {},
+
+                }
+            },
+
+            xAxis: {
+                type: 'category',
+                axisTick: {
+                    // 控制刻度线在柱形形状的下方
+                    alignWithLabel: false,
+                    show: true,
+                },
+                // 设置轴线的属性
+                axisLine: {
+                    lineStyle: {
+                        color: '#f40',
+                        width: 4
+                    }
+                },
+                axisLabel: {
+                    inside: false,
+                    interval: 0,
+                    rotate: 40
+                },
+                data: xData,
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        type: 'dashed',
+                        width: 2,
+                        color: '#f40'
+                    }
+                }
+            },
+
+            yAxis: {
+                type: 'value',
+                name: '单位：分',
+                // 可选值： start、end、middle
+                nameLocation: 'bottom',
+                // 名称与坐标轴间距: nameGap  间距
+                nameGap: 30,
+                nameRotate: '0',
+                nameTextStyle: {
+                    // 定义name的位置，上、右、下、左
+                    // padding: 4：表示 padding: [4, 4, 4, 4]
+                    // padding: [3, 4]：表示 padding: [3, 4, 3, 4]
+                    padding: [10, 10, 10, 600],
+                    fontSize: 16,
+                },
+                // 设置坐标轴的属性
+                axisLine: {
+                    lineStyle: {
+                        color: '#00ff00',
+                        width: 5
+                    }
+                },
+                // 刻度
+                axisTick: {
+                    show: true,
+                    alignWithLabel: false
+                },
+                // 是否显示网格
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        type: 'line',
+                        color: '#000000',
+                    }
+                },
+                // 坐标轴两端空白策略，
+                // boundaryGap: [0, '100%']
+            },
+
+            series: [{
+                name: '语文成绩',
+                type: 'bar',
+                // 设置柱状图的大小
+                barWidth: 50,
+                // 最大值，最小值
+                markPoint: {
+                    itemStyle: {
+                        normal: {
+                            label: {
+                                show: true,
+                                color: '#fff'
+                            }
+                        }
+                    },
+                    data: [{
+                        name: 'min',
+                        type: 'min',
+                    }, {
+                        name: 'max',
+                        type: 'max'
+                    }]
+                },
+                // 标线
+                markLine: {
+                    data: [{
+                        type: 'average',
+                        name: '平均值'
+                    }]
+                },
+                itemStyle: {
+                    // emphasis: {
+                    //     barBorderRadius: [10, 10, 10, 10],
+                    // },
+                    barBorderRadius: [30, 30, 0, 0],
+                    normal: {
+                        barBorderRadius: [30, 30, 0, 0],
+                        label: {
+                            show: true, //是否展示
+                            textStyle: {
+                                fontWeight: 'bolder',
+                                fontSize: '14',
+                                fontFamily: '微软雅黑',
+                                color: '#fff'
+                            },
+                        },
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            offset: 0,
+                            color: '#ffcc00',
+                        }, {
+                            offset: 1,
+                            color: '#ff4400'
+                        }]),
+                    }
+                },
+                data: yData
+            }, {
+                name: '2019-2020销量',
+                type: 'bar',
+                data: yData2
+            }]
+        }
+
+        mychart.setOption(options);
+    </script>
+</body>
+
+</html>
